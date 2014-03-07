@@ -172,10 +172,15 @@ if (SECRET_ACCESS_TOKEN === 'BetterChangeMeNowOrSufferTheConsequences') {
 <pre>
 
 Checking the environment ...
-
-Running as <b><?php echo trim(shell_exec('whoami')); ?></b>.
-
 <?php
+ob_flush();
+flush();
+?>
+Running as <b><?php echo trim(shell_exec('whoami')); ?></b>.
+<?php
+ob_flush();
+flush();
+
 // Check if the required programs are available
 $requiredBinaries = array('git', 'rsync');
 if (defined('BACKUP_DIR') && BACKUP_DIR !== false) {
@@ -194,14 +199,28 @@ foreach ($requiredBinaries as $command) {
 			, $path
 			, $version[0]
 		);
+
+		ob_flush();
+		flush();
+
 	}
 }
 ?>
 
 Environment OK.
 
+<?php
+ob_flush();
+flush();
+?>
+
 Deploying <?php echo REMOTE_REPOSITORY; ?> <?php echo BRANCH."\n"; ?>
 to        <?php echo TARGET_DIR; ?> ...
+
+<?php
+ob_flush();
+flush();
+?>
 
 <?php
 // The commands
@@ -312,6 +331,7 @@ foreach ($commands as $command) {
 		, htmlentities(trim($command))
 		, htmlentities(trim(implode("\n", $tmp)))
 	);
+	ob_flush();
 	flush(); // Try to output everything as it happens
 
 	// Error handling and cleanup
@@ -345,6 +365,8 @@ Cleaning up temporary files ...
 		break;
 	}
 }
+
+ob_end_flush();
 ?>
 
 Done.
